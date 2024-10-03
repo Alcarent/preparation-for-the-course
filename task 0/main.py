@@ -39,7 +39,6 @@ objective.SetMaximization()
 
 result_status = solver.Solve()
 
-print("Solution:")
 print("Objective value =", objective.Value())
 print("x1 =", x1_var.solution_value())
 print("x2 =", x2_var.solution_value())
