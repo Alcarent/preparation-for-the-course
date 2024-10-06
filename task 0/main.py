@@ -1,7 +1,7 @@
 from ortools.init.python import init
 from ortools.linear_solver import pywraplp
-import Class_Problem
-import Class_Solver
+from Class_Problem import *
+from Class_Solver import *
 
 solver = pywraplp.Solver.CreateSolver("GLOP")
 infinity = solver.infinity()
@@ -46,3 +46,5 @@ print("x3 =", x3_var.solution_value())
 print("x4 =", x4_var.solution_value())
 
 
+a = Problem(2)
+a.www()
