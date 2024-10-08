@@ -46,5 +46,7 @@ print("x3 =", x3_var.solution_value())
 print("x4 =", x4_var.solution_value())
 
 
-a = Problem(2)
-a.www()
+problem = Problem(1,1)
+print(problem.NUM_CONSTRAINTS)
+
+
