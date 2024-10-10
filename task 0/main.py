@@ -32,7 +32,7 @@ constraint4.SetCoefficient(x1_var, 4)
 constraint4.SetCoefficient(x2_var, 4)
 constraint4.SetCoefficient(x4_var, 1)
 
-objective = solver.Objective()
+objective = solver.Objecctive()
 objective.SetCoefficient(x1_var, 29)
 objective.SetCoefficient(x2_var, 45)
 objective.SetMaximization()
@@ -47,6 +47,10 @@ print("x4 =", x4_var.solution_value())
 
 
 problem = Problem(1,1)
-print(problem.NUM_CONSTRAINTS)
+problem.ADD_VAR('var11', -infinity, '42')
+problem.ADD_VAR('var12', -infinity, '43')
+print(problem.ARR_OF_VAR)
 
-
+print(problem.NUMBER_OF_VAR())
+problem.ADD_CONSTR()
+print(problem.ARR_OF_CONSTRAINTS)

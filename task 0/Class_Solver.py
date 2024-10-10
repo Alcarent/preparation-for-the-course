@@ -3,4 +3,5 @@ from ortools.linear_solver import pywraplp
 
 
 class Solver:
-    pass
+    solver = pywraplp.Solver.CreateSolver("GLOP")
+    infinity = solver.infinity()
