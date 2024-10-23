@@ -1,7 +1,6 @@
 from ortools.init.python import init
 from ortools.linear_solver import pywraplp
 from Class_Problem import *
-from Class_Solver import *
 
 solver = pywraplp.Solver.CreateSolver("GLOP")
 infinity = solver.infinity()
@@ -22,7 +21,7 @@ constraint2.SetCoefficient(x2_var, -3)
 constraint2.SetCoefficient(x3_var, -7)
 constraint2.SetCoefficient(x4_var, 3)
 
-constraint3 = solver.Constraint(60, 60, "ct")
+constraint3 = solver.Constraint(60, 60)
 constraint3.SetCoefficient(x1_var, 2)
 constraint3.SetCoefficient(x2_var, 8)
 constraint3.SetCoefficient(x3_var, 1)
@@ -45,8 +44,5 @@ print("x2 =", x2_var.solution_value())
 print("x3 =", x3_var.solution_value())
 print("x4 =", x4_var.solution_value())
 
-
-problem = Problem(1,1)
-print(problem.NUM_CONSTRAINTS)
 
 
