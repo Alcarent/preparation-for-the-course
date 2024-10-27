@@ -14,5 +14,9 @@ from ortools.linear_solver import pywraplp
 '''
 
 class Problem_and_solve:
-    def __init__(self):
-        return 0
+    solver = pywraplp.Solver.CreateSolver("GLOP")
+    infinity = solver.infinity()
+    def __init__(self) -> None:
+        return self
+
+    
