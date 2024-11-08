@@ -1,6 +1,7 @@
 from ortools.init.python import init
 from ortools.linear_solver import pywraplp
-<<<<<<< HEAD
+from Class_Variable_and_Constraint import *
+from abc import ABC, abstractmethod
 '''
 для начало нужно определить что мне вообще нужно:
     1) классы для хранения данных о переменныхи и ограничениях, внутри которых я буду хранить данные в более удобном формате и упрощу себе их вывод 
@@ -14,49 +15,63 @@ from ortools.linear_solver import pywraplp
     3) как только начинка с решением готова, нужно организовать вывод всех численных данных решения, включая каждую пременную и ограничение
 '''
 
-class Problem_and_solve:
+''' Создаём абстрактный класс для с частями нашей проблемы'''
+class ProblemBuilder(ABC):
+    @abstractmethod
+    def add_variables(self):
+        pass
+
+    @abstractmethod
+    def add_constraints(self):
+        pass
+
+    @abstractmethod
+    def add_objective_function(self):
+        pass
+
+    @abstractmethod
+    def get_problem(self):
+        pass
+
+'''директор'''
+class PtoblemDirector:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def construct_problem(self):
+        self.builder.add_variable()
+        self.builder.add_constraint()
+'''сам класс проблемы'''
+class Problem:
     solver = pywraplp.Solver.CreateSolver("GLOP")
     infinity = solver.infinity()
-    def __init__(self) -> None:
-        return self
+    def __init__(self):
+        self.variables = []
+        '''для заполнения используется класс Variable'''
 
-    
-=======
-#для реализации можно просто создать внутренние массивы в которые я буду добавлять 
-#вводимые данные через написанную функцию, 
-#так я смогу свободно добавлять и редактировать введённые ограничения и переменные
-class Problem:
-    
-    ARR_OF_VAR = [] #имена и ограничения переменных
-    
-    ARR_OF_CONSTRAINTS = [] #другие ограничения, для корректной работы мы сначала задаём все переменные, а уже после доп условия
-    
-    ARR_OF_PROBLEM = []
-    
-    def __init__(this, NUM_VARS, NUM_CONSTRAINTS):
-        print("Hi")
+        self.constraints = [] 
+        '''для заполнения используется класс Constraint, последнее ограничение- целевая функция'''
         
-    def ADD_VAR(self, imya, min, max):#добавляем имя переменной и её ограничения
-        self.ARR_OF_VAR.append(imya)
-        self.ARR_OF_VAR.append(min)
-        self.ARR_OF_VAR.append(max)
-        
-    def NUMBER_OF_VAR(self):
-        return int(len(self.ARR_OF_VAR)/3)
-    
-    def ADD_CONSTR(self):
-        for i in range(int(len(self.ARR_OF_VAR)/3)):
-            name = self.ARR_OF_VAR[i*3]
-            self.ARR_OF_CONSTRAINTS.append(int(input(f"{name} * "))) #добавляем значения переменных в ограничение (включая 0)
-    
-        self.ARR_OF_CONSTRAINTS.append(int(input('min = '))) #min ограничения
-        self.ARR_OF_CONSTRAINTS.append(int(input('max = '))) #max ограничения
+    def add_variable(self, num_vars):
+        i = 0
+        while(i < num_vars):
+            L_R = input("Enter left restriction for variable{i}: ")
+            R_R = input("Enter right restriction for variable{i}: ")
+            variable = Variable(i, L_R, R_R)
+            self.variables.append()
+            i += 1
 
-    def ADD_OBJ(self): #то же самое что и ADD_CONSTR, но для целевой функции
-        for i in range(int(len(self.ARR_OF_VAR)/3)):
-            name = self.ARR_OF_VAR[i*3]
-            self.ARR_OF_PROBLEM.append(int(input(f"{name} * "))) #добавляем значения переменных в ограничение (включая 0)
-    
-        self.ARR_OF_PROBLEM.append(int(input('min = '))) #min ограничения
-        self.ARR_OF_PROBLEM.append(int(input('max = '))) #max ограничения
->>>>>>> 15d3d25eec6467807cbe486ded78836be35fcc73
+    def add_constraint(self, num_cons):
+        i = 0
+        while(i < num_cons):
+            j = 0
+            L_R = input("Enter left restriction for constrain{i}: ")
+            R_R = input("Enter right restriction for constrain{i}: ")
+            constrain = Constraint(L_R, R_R)
+            
+            while(j < len(self.variables)):
+                index = input("Enter index of variable{j} for constraint{i}: ")
+                constrain.completion(index)
+                j += 1
+
+            i += 1

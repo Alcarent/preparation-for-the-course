@@ -43,16 +43,3 @@ print("x1 =", x1_var.solution_value())
 print("x2 =", x2_var.solution_value())
 print("x3 =", x3_var.solution_value())
 print("x4 =", x4_var.solution_value())
-
-
-<<<<<<< HEAD
-=======
-problem = Problem(1,1)
-problem.ADD_VAR('var11', -infinity, '42')
-problem.ADD_VAR('var12', -infinity, '43')
-print(problem.ARR_OF_VAR)
->>>>>>> 15d3d25eec6467807cbe486ded78836be35fcc73
-
-print(problem.NUMBER_OF_VAR())
-problem.ADD_CONSTR()
-print(problem.ARR_OF_CONSTRAINTS)
