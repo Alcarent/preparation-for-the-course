@@ -1,36 +1,81 @@
-import matplotlib.pyplot as plt
+from ortools.linear_solver import pywraplp
 import numpy as np
+solver = pywraplp.Solver.CreateSolver("GLOP")
 
-def f(x):
-  if (x < -5):
-    return -8*x-7
-  elif((x>=-5)and(x<-3)):
-    return -6*x+3
-  elif((x>=-3)and(x<-2)):
-    return -5*x+6
-  elif((x>=-2)and(x<2)):
-    return -2*x+11
-  elif((x>=2)and(x<8)):
-    return x/2+6
-  else:
-    return 5*x-30
+class Probem:
+    solver = pywraplp.Solver.CreateSolver("GLOP")
+    c = []
+    vars = []
+    a = []
+    b = []
+    a_eq = []
+    b_eq = []
+    status = ""
+    x = []
+    def add_c(self, c):
+        self.c = c.copy()
 
-# Шаг построения
-lag = 0.01
-# Отрезок построения
-y_arr=[]
-x_arr =[]
-x = -10
-while(x<10):
-  x_arr.append(x)
-  y_arr.append(f(x))
-  x+=lag
+    def add_x(self, vars):
+        self.vars = vars.copy()
+        
+    def add_a_b_aeq_beq(self, a, b, a_eq, b_eq):
+        self.a = a.copy()
+        self.b = b.copy()
+        self.a_eq = a_eq.copy()
+        self.b_eq = b_eq.copy()
+        
+        
+    def solve(self):
+        n = len(self.c)
+        x_string = ['x'+str(i) for i in range(1, n+1)]
+        self.x = [solver.NumVar(self.vars[0][i], self.vars[1][i], x_string[i]) for i in range(n)]
+#self.solver.infinity()
+        for r in range(len(self.b_eq)):
+          solver.Add(sum(self.a_eq[r][u] * self.x[u] for u in range(n)) == self.b_eq[r])
 
-fig = plt.figure()
-plt.plot(x_arr, y_arr)
-plt.title('График функции  $f(x)= x * x * (50 - x/2)')
-plt.ylabel('f(x)')
-plt.xlabel('x')
+        for r in range(len(self.b)):
+          solver.Add(sum(self.a[r][u] * self.x[u] for u in range(n)) <= self.b[r])
 
-# Показать график
-plt.show()
+        solver.Maximize(sum(self.c[i] * self.x[i] for i in range(n)))
+        result_status = self.solver.Solve()
+        print(result_status)
+        print("Objective value =", self.solver.Objective().Value())
+        
+        
+        
+        
+        
+x = np.array([[0.0, 0.0],
+              [10.0, 10.0]])
+
+"""np.array([[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        [70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0]])"""
+
+c = np.array([2.0, 1.0])
+
+"""np.array([3.0, 20.0, -2.0, 6.0, 13.0, 12.0, 32.0, 7.0, 21.0, 2.0, 0.0, 7.0])
+"""
+a = np.array([[1.0, 1.0]])
+
+"""np.array([[1.0, 3.0, 8.0, 6.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0, 0.0, 2.0, 5.0, 13.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.0, -2.0, 2.0, 9.0]])"""
+        
+b = np.array([90.0])
+
+"""np.array([290.0,430.0,511.0] )"""
+
+a_eq = np.array([[6.0, 1.0]])
+
+"""np.array([[1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+         [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0]])
+       #  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]]"""
+b_eq = np.array([70.0])
+"""np.array([191.0, 250.0])#, 601.0]"""
+
+
+Problema = Probem()
+Problema.add_c(c)
+Problema.add_a_b_aeq_beq(a, b, a_eq, b_eq)
+Problema.add_x(x)
+Problema.solve()
